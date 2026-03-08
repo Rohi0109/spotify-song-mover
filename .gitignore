@@ -1,0 +1,11 @@
+/target
+.json/
+.pdf
+*.json
+client_secret*.json
+.env
+docs/youtube_tokens.json
+.vscode
+docs/unique_songs.csv
+docs/video_cache.json
+

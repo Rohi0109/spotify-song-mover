@@ -1,0 +1,17 @@
+[package]
+name = "spotify"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = { version = "0.4.43", features = ["serde"] }
+csv = "1.4.0"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0"
+dotenvy = "0.15"
+tokio = { version = "1", features = ["full"] }
+google-youtube3 = "6"
+hyper-rustls = { version = "0.27", features = ["http2", "ring"] }
+hyper-util = "0.1"
+yup-oauth2 = "11"
+rustls = { version = "0.23", features = ["ring"] }
