@@ -43,3 +43,19 @@ impl FullSongDetails {
         self.skipped
     }
 }
+struct SongDetails {
+    timestamp: DateTime<Utc>,
+    platform: String,
+    ms_played: u64,
+    conn_country: String,
+    master_metadata_track_name: Option<String>,
+    master_metadata_album_artist_name: Option<String>,
+    master_metadata_album_album_name: Option<String>,
+    spotify_track_uri: Option<String>,
+    reason_start: String,
+    reason_end: String,
+    shuffle: bool,
+    skipped: bool,
+    offline: bool,
+    offline_timestamp: Option<i64>,
+}

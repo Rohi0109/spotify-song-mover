@@ -3,10 +3,8 @@ use std::error::Error;
 use std::fs;
 use std::path::Path;
 
+use google_youtube3::api::{Playlist, PlaylistItem, PlaylistItemSnippet, PlaylistSnippet, PlaylistStatus, ResourceId};
 use google_youtube3::YouTube;
-use google_youtube3::api::{
-    Playlist, PlaylistItem, PlaylistItemSnippet, PlaylistSnippet, PlaylistStatus, ResourceId,
-};
 use google_youtube3::hyper_rustls::HttpsConnectorBuilder;
 use hyper_util::client::legacy::connect::HttpConnector;
 use rustls;
@@ -36,7 +34,7 @@ pub fn save_video_cache(cache: &HashMap<String, String>) -> Result<(), Box<dyn E
 pub async fn build_youtube_hub(client_secret_path: &str) -> Result<YtHub, Box<dyn Error>> {
     // Install default crypto provider for rustls
     let _ = rustls::crypto::ring::default_provider().install_default();
-
+    
     let secret = yup_oauth2::read_application_secret(client_secret_path).await?;
 
     let auth = yup_oauth2::InstalledFlowAuthenticator::builder(
@@ -81,11 +79,12 @@ pub async fn search_video(
 
     match result {
         Ok((_, search_response)) => {
-            if let Some(items) = search_response.items
-                && let Some(item) = items.first()
-                && let Some(ref id) = item.id
-            {
-                return Ok(id.video_id.clone());
+            if let Some(items) = search_response.items {
+                if let Some(item) = items.first() {
+                    if let Some(ref id) = item.id {
+                        return Ok(id.video_id.clone());
+                    }
+                }
             }
             Ok(None)
         }
@@ -97,7 +96,10 @@ pub async fn search_video(
 }
 
 /// Create a new YouTube playlist, returns playlist ID
-pub async fn create_playlist(hub: &YtHub, title: &str) -> Result<String, Box<dyn Error>> {
+pub async fn create_playlist(
+    hub: &YtHub,
+    title: &str,
+) -> Result<String, Box<dyn Error>> {
     let playlist = Playlist {
         snippet: Some(PlaylistSnippet {
             title: Some(title.to_string()),
@@ -110,7 +112,11 @@ pub async fn create_playlist(hub: &YtHub, title: &str) -> Result<String, Box<dyn
         ..Default::default()
     };
 
-    let (_, created) = hub.playlists().insert(playlist).doit().await?;
+    let (_, created) = hub
+        .playlists()
+        .insert(playlist)
+        .doit()
+        .await?;
 
     created
         .id

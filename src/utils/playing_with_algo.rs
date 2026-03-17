@@ -12,14 +12,13 @@ pub struct SongStats {
 }
 
 #[derive(Debug, Clone, Copy)]
-#[allow(dead_code)]
 pub enum SortKey {
-    Play,
-    Shuffled,
-    FullPlay,
+    PlayCount,
+    ShuffledCount,
+    FullPlayCount,
 }
 
-pub fn build_unique_song_stats(songs: Vec<FullSongDetails>) -> HashMap<String, SongStats> {
+pub fn build_unique_song_stats(songs: &[FullSongDetails]) -> HashMap<String, SongStats> {
     let start_time = Instant::now();
 
     let mut stats: HashMap<String, SongStats> = HashMap::new();
@@ -60,14 +59,14 @@ pub fn sorted_unique_by(
     let mut sorted: Vec<(String, SongStats)> = stats.into_iter().collect();
     sorted.sort_unstable_by(|a, b| {
         let a_val = match sort_key {
-            SortKey::Play => a.1.play_count,
-            SortKey::Shuffled => a.1.shuffled_count,
-            SortKey::FullPlay => a.1.full_play_count,
+            SortKey::PlayCount => a.1.play_count,
+            SortKey::ShuffledCount => a.1.shuffled_count,
+            SortKey::FullPlayCount => a.1.full_play_count,
         };
         let b_val = match sort_key {
-            SortKey::Play => b.1.play_count,
-            SortKey::Shuffled => b.1.shuffled_count,
-            SortKey::FullPlay => b.1.full_play_count,
+            SortKey::PlayCount => b.1.play_count,
+            SortKey::ShuffledCount => b.1.shuffled_count,
+            SortKey::FullPlayCount => b.1.full_play_count,
         };
         b_val.cmp(&a_val).then_with(|| a.0.cmp(&b.0))
     });
@@ -75,19 +74,14 @@ pub fn sorted_unique_by(
 }
 
 pub fn count_unique_shuffled(stats: &HashMap<String, SongStats>) -> usize {
-    stats
-        .values()
-        .filter(|entry| entry.shuffled_count > 0)
-        .count()
+    stats.values().filter(|entry| entry.shuffled_count > 0).count()
 }
 
-#[allow(dead_code)]
-pub fn counting_unique(songs: Vec<FullSongDetails>) -> HashMap<String, i32> {
+pub fn counting_unique(songs:Vec<FullSongDetails>) ->  HashMap<String,i32> {
     let start_time = Instant::now(); // Start the timer
 
-    let mut counts = HashMap::new();
-    for song in songs {
-        //i should filter these out but rust yells at me if i dont
+    let  mut counts =HashMap::new();
+    for song in songs { //i should filter these out but rust yells at me if i dont
         if let Some(track_name) = song.master_metadata_track_name {
             *counts.entry(track_name).or_insert(0) += 1;
         }
@@ -97,9 +91,10 @@ pub fn counting_unique(songs: Vec<FullSongDetails>) -> HashMap<String, i32> {
     counts
 }
 
-#[allow(dead_code)]
-pub fn sorting_count(count: HashMap<String, i32>) -> Vec<(std::string::String, i32)> {
-    let mut sorted: Vec<(String, i32)> = count.into_iter().collect();
+pub fn sorting_count(count:HashMap<String,i32>) -> Vec<(std::string::String, i32)>{
+    let mut sorted : Vec<(String,i32)> = count.into_iter().collect();
     sorted.sort_by(|a, b| b.cmp(a));
     sorted
+
 }
+

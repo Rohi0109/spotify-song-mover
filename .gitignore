@@ -9,3 +9,5 @@ docs/youtube_tokens.json
 docs/unique_songs.csv
 docs/video_cache.json
 .github
+songs
+libs
