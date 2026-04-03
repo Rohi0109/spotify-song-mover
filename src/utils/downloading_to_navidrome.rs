@@ -18,8 +18,8 @@ pub async fn downloading_songs(songs: &[(String, SongStats)]) -> Result<(), Box<
         .with_cookies_from_browser("firefox")  // Use cookies from Firefox for age-restricted videos
         .build().await?;
 
-    // Take top 1000 songs
-    for (track_name, stats) in songs.iter().take(1000) {
+
+    for (track_name, stats) in songs.iter() {
         let query = format!("{} {}", stats.artist_name, track_name);
         println!("Searching for: {}", query);
         

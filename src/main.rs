@@ -12,7 +12,6 @@ use utils::downloading_to_navidrome::downloading_songs;
 #[tokio::main]
 async fn main() {
     dotenvy::dotenv().ok();
-    let api_key = std::env::var("API_KEY").expect("API_KEY not set in .env");
     let start_time = Instant::now();
     println!("starting!");
 
@@ -24,9 +23,9 @@ async fn main() {
     println!("unique shuffled songs: {}", count_unique_shuffled(&stats));
     let sorted_count = sorted_unique_by(stats, SortKey::FullPlayCount);
     println!("unique songs: {}", sorted_count.len());
-    if let Err(err) = write_unique_song_stats_to_csv("docs/unique_songs.csv", &sorted_count) {
-        eprintln!("failed to write csv: {}", err);
-    }
+    // if let Err(err) = write_unique_song_stats_to_csv("docs/unique_songs.csv", &sorted_count) {
+    //     eprintln!("failed to write csv: {}", err);
+    // }
     if let Err(err) = downloading_songs(&sorted_count).await {
         eprintln!("failed to download songs: {}", err);
     }
