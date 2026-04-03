@@ -3,8 +3,6 @@ use utils::pull_data::from_json_file;
 use utils::playing_with_algo::{
     build_unique_song_stats, count_unique_shuffled, sorted_unique_by, SortKey,
 };
-use utils::write_to_csv::write_unique_song_stats_to_csv;
-use utils::youtube;
 use utils::song::FullSongDetails;
 use std::time::Instant;
 use utils::downloading_to_navidrome::downloading_songs;

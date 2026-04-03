@@ -2,7 +2,6 @@
 .json/
 .pdf
 *.json
-!spotify_files/combined.json
 client_secret*.json
 .env
 docs/youtube_tokens.json
