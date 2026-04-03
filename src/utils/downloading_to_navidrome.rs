@@ -15,7 +15,6 @@ pub async fn downloading_songs(songs: &[(String, SongStats)]) -> Result<(), Box<
         PathBuf::from("libs"),
         PathBuf::from("output")
     ).await?
-        .with_cookies_from_browser("firefox")  // Use cookies from Firefox for age-restricted videos
         .build().await?;
 
 
