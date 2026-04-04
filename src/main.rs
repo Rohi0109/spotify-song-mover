@@ -20,7 +20,12 @@ async fn main() {
     let stats = build_unique_song_stats(&filtered);
     println!("unique shuffled songs: {}", count_unique_shuffled(&stats));
     let sorted_count = sorted_unique_by(stats, SortKey::FullPlay);
-    println!("unique songs: {}", sorted_count.len());
+    // Filter to songs with 10+ plays
+    let sorted_count: Vec<_> = sorted_count
+        .into_iter()
+        .filter(|(_, stats)| stats.play_count >= 10)
+        .collect();
+    println!("unique songs (10+ plays): {}", sorted_count.len());
     // if let Err(err) = write_unique_song_stats_to_csv("docs/unique_songs.csv", &sorted_count) {
     //     eprintln!("failed to write csv: {}", err);
     // }
